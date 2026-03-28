@@ -1,0 +1,26 @@
+project/
+│
+├── config/
+│   └── koneksi.php
+│
+├── pages/
+│   ├── produk/
+│   ├── transaksi/
+│   ├── peramalan/
+│   └── laporan/
+│
+├── templates/
+│   ├── header.php
+│   └── footer.php
+│
+├── functions/
+│   ├── ses.php        ← logika peramalan
+│   └── helper.php
+│
+├── ajax/
+│   └── search.php
+│
+├── assets/
+│
+├── index.php
+└── login.php
