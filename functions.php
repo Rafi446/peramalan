@@ -47,4 +47,15 @@ function ubah($data) {
     return mysqli_affected_rows($conn);
 }
 
+function peramalan($data) {
+    global $conn;
+
+    $query = "SELECT * FROM sales_data ORDER BY tanggal_penjualan ASC LIMIT 12";
+    $result = mysqli_query($conn, $query);
+
+    $row = [];
+
+    
+}
+
 ?>
