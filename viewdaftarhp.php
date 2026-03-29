@@ -2,7 +2,7 @@
 
 require 'functions.php';
 
-$daftarhp = query("SELECT * FROM sales_data");
+$daftarhp = query("SELECT * FROM daftarhp");
 
 ?>
 
@@ -15,26 +15,25 @@ $daftarhp = query("SELECT * FROM sales_data");
 </head>
 <body>
     <h2>Halaman Dashboard</h2>
-    <a href="tambah.php">Tambah Data Penjualan</a>
-    <br><br>
     <table border="2">
         <tr>
+            <th>No</th>
             <th>Id</th>
-            <th>Nama Produk</th>
-            <th>Jumlah Terjual</th>
-            <th>Tanggal Terjual</th>
+            <th>Nama</th>
+            <th>Harga</th>
+            <th>Gambar</th>
             <th>Aksi</th>
         </tr>
         <?php $i = 1; ?>
         <?php foreach ($daftarhp as $row) : ?>
         <tr>
             <td><?= $i; ?></td>
+            <td><?= $row["id"]; ?></td>
             <td><?= $row["nama"]; ?></td>
-            <td><?= $row["qty"]; ?></td>
-            <td><?= $row["tanggal_penjualan"]; ?></td>
-            <td><a href="ubah.php?id=<?= $row["id"] ?>">Ubah</a> | 
-            <a href="hapus.php?id=<?= $row["id"] ?>">Hapus</a></td>
-            </tr>
+            <td><?= $row["harga"]; ?></td>
+            <td><img src="img/<?= $row["gambar"]; ?>" width="50"></td>
+            <td><a href="ubah.php">Ubah</a> | <a href="hapus.php">Hapus</a></td>
+        </tr>
         <?php $i++ ?>
         <?php endforeach; ?>
     </table>

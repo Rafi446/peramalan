@@ -12,4 +12,39 @@ function query ($query) {
     return $rows;
 }
 
+function hapus($id) {
+    global $conn;
+    $id = $_GET["id"];
+    $query = "DELETE FROM sales_data WHERE id = $id";
+    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
+
+function tambah($data) {
+    global $conn;
+
+    $nama = $data["nama"];
+    $qty = $data["qty"];
+    $tanggalPenjualan = $data["tanggalPenjualan"];
+
+    $query = "INSERT INTO sales_data VALUES ('', '$nama', '$qty', '$tanggalPenjualan')";
+    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
+
+function ubah($data) {
+    global $conn;
+    $id = $data["id"];    
+    $nama = $data["nama"];
+    $qty = $data["qty"];
+    $tanggalPenjualan = $data["tanggalPenjualan"]; 
+    $query = "UPDATE sales_data SET nama = '$nama', 
+                qty = $qty, 
+                tanggal_penjualan = '$tanggalPenjualan' 
+                WHERE id = $id";
+    
+    mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
+
 ?>
