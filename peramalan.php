@@ -2,7 +2,40 @@
 
 require 'functions.php';
 
-$daftarhp = query("SELECT * FROM sales_data");
+$query = "SELECT * FROM sales_data ORDER BY tanggal_penjualan ASC LIMIT 12";
+    $result = mysqli_query($conn, $query);
+
+    $rows = [];
+
+    while($row = mysqli_fetch_assoc($result)) {
+        $rows[] = $row["qty"];
+    }
+
+    $alpha = 0.3;
+
+    $forecast = [];
+    $forecast[0] = $rows[0];
+
+    for ($i = 1; $i < count($rows); $i++) {
+        $forecast[$i] = $alpha * $rows[$i - 1] + (1 - $alpha) * $forecast[$i - 1];
+    }
+
+    
+    $last_index = count($rows) - 1;
+
+    $next_forecast = $alpha * $rows[$last_index] + (1 - $alpha) * $forecast[$last_index];
+
+    // mape
+    $total_error = 0;
+    $n = count($rows);
+
+    for ($i = 1; $i < $n; $i++) {
+        $error = abs($rows[$i] - $forecast[$i] / $rows[$i]);
+        $total_error =+ $error;
+    }
+
+    $mape = $total_error / ($n -1) * 100;
+    
 
 ?>
 <!DOCTYPE html>
@@ -16,22 +49,33 @@ $daftarhp = query("SELECT * FROM sales_data");
     <h2>Peramalan Single Exponential Smoothing</h2>
     <table border="2">
         <tr>
-            <th>Bulan</th>
-            <th>Jumlah Terjual</th>
-            <th>Tanggal Terjual</th>
-            <th>Peramalan</th>
+            <th>Periode</th>
+            <th>Aktual</th>
+            <th>Forecast</th>
         </tr>
-        <?php $i = 1; ?>
-        <?php foreach ($daftarhp as $row) : ?>
+        <?php for($i = 0; $i < count($rows); $i++) : ?>
         <tr>
-            <td><?= $i; ?></td>
-            <td><?= $row["qty"]; ?></td>
-            <td><?= $row["tanggal_penjualan"]; ?></td>
-            <td>Belum Ada</td>
+            <td><?php echo $i + 1; ?></td>
+            <td><?php echo $rows[$i]; ?></td>
+            <td><?php echo round($forecast[$i], 3); ?></td>
         </tr>
-        <?php $i++ ?>
-        <?php endforeach; ?>
+        <?php endfor; ?>
     </table>
-    <p>Hasil Peramalan pada Periode ke-13</p>
+    <p>Hasil Peramalan pada Periode ke-13 = <?php echo round($next_forecast, 2); ?></p>
+    <p>Hasil Evaluasi Peramalan (MAPE) = <?= round($mape, 3); ?></p>
+    <p>Interpretasi Nilai MAMPE = 
+        <?php // penilaian mape
+    if ($mape <= 10) {
+        echo "Sangat Baik";
+    } elseif ($mape <= 20) {
+        echo "Baik";
+    } elseif ($mape <= 50) {
+        echo "Cukup";
+    } else {
+        echo "Buruk";
+    } ?>
+    </p>
+    
+
 </body>
 </html>
