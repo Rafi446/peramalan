@@ -10,7 +10,7 @@ $daftarhp = query("SELECT * FROM sales_data");
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=], initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman Home</title>
 </head>
 <body>
@@ -18,6 +18,12 @@ $daftarhp = query("SELECT * FROM sales_data");
     <a href="peramalan.php" style="color: darkgrey;">Peramalan</a> |
     <a href="tambah.php">Tambah Data Penjualan</a>
     <br><br>
+    <form action="" method="post">
+        <input type="text" name="cari" id="cari" placeholder="Cari Jumlah Penjualan">
+        <button type="submit" name="submit">Cari</button>
+    </form>
+    <br>
+    <div id="hasil">
     <table border="2">
         <tr>
             <th>Id</th>
@@ -39,5 +45,8 @@ $daftarhp = query("SELECT * FROM sales_data");
         <?php $i++ ?>
         <?php endforeach; ?>
     </table>
+    </div>
+    <script src="jquery-4.0.0.js"></script>
+    <script src="scripttt.js"></script>
 </body>
 </html>

@@ -36,6 +36,21 @@ $query = "SELECT * FROM sales_data ORDER BY tanggal_penjualan ASC LIMIT 12";
 
     $mape = $total_error / ($n -1) * 100;
     
+    // simpan ke dalam databasse
+
+    for ($i = 0; $i < count($rows); $i++) {
+        $f = $forecast[$i];
+        $aktual = $rows[$i];
+        $periode = $i + 1;
+        $a = 0.3;
+        $query = "INSERT INTO peramalan (periode, aktual, forecast, alpha, mape, date)
+        VALUES ('$periode', '$aktual', '$f', '$a', '$mape', NOW())";
+        mysqli_query($conn, $query);
+
+        if (!$query) {
+        die("Error: " . mysqli_error($conn));
+        }
+    }
 
 ?>
 <!DOCTYPE html>
