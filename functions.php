@@ -47,31 +47,43 @@ function ubah($data) {
     return mysqli_affected_rows($conn);
 }
 
-function peramalan($data) {
-    global $conn;
+function register($data) {
+    global  $conn;
+    $username = strtolower(mysqli_real_escape_string($conn, $data["username"]));
+    $password = mysqli_real_escape_string($conn, $data["password"]);
+    $password2 = mysqli_real_escape_string($conn, $data["password2"]);
 
-    $query = "SELECT * FROM sales_data ORDER BY tanggal_penjualan ASC LIMIT 12";
+    $query = "SELECT * FROM users WHERE username = '$username'";
     $result = mysqli_query($conn, $query);
-
-    $rows = [];
-
-    while($row = mysqli_fetch_assoc($result)) {
-        $rows[] = $row["qty"];
+    if (mysqli_fetch_assoc($result)) {
+        echo "<script>alert('Username sudah terdaftar, coba username lain')</script>";
+        return false;
+    }
+    if ($password !== $password2) {
+        echo "<script>alert('Konfirmasi Password Salah')</script>";
+        return false;
     }
 
-    $alpha = 0.3;
+    $password = password_hash($password, PASSWORD_DEFAULT);
+    mysqli_query($conn, "INSERT INTO users VALUES ('', '$username', '$password')");
+    return mysqli_affected_rows($conn);
 
-    $forecast = [];
-    $forecast[0] = $rows[0];
+}
 
-    for ($i = 1; $i < count($rows); $i++) {
-        $forecast[$i] = $alpha * $rows[$i - 1] + (1 - $alpha) * $forecast[$i - 1];
+function login($data) {
+    global $conn;
+    $username = $data["username"];
+    $password = $data["password"];
+    $query = "SELECT * FROM users WHERE username = '$username'";
+    $result = mysqli_query($conn, $query);
+    if (mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_assoc($result);
+        if (password_verify($password, $row["password"])) {
+            header("Location: index.php");
+            exit;
+        }
     }
-
-    
-    $last_index = count($rows) - 1;
-
-    $next_forecast = $alpha * $rows[$last_index] + (1 - $alpha) * $forecast[$last_index];
+    $erro = true;
 }
 
 ?>
