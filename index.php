@@ -53,6 +53,8 @@ $daftarhp = query("SELECT * FROM sales_data");
         <?php endforeach; ?>
     </table>
     </div>
+    <br>
+    <a href="cetak.php" target="_blank">Cetak</a>
     <script src="jquery-4.0.0.js"></script>
     <script src="scripttt.js"></script>
 </body>
