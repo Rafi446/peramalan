@@ -1,6 +1,13 @@
 <?php 
 
 require 'functions.php';
+
+session_start();
+if (!isset($_SESSION["login"])) {
+    header("Location: index.php");
+    exit;
+}
+
 $id = $_GET["id"];
 $row = query("SELECT * FROM sales_data WHERE id = $id")[0];
 

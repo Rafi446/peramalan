@@ -1,6 +1,12 @@
 <?php 
 
 require 'functions.php';
+session_start();
+
+if (!isset($_SESSION["login"])) {
+    header("Location: login.php");
+    exit;
+}
 
 $query = "SELECT * FROM sales_data ORDER BY tanggal_penjualan ASC LIMIT 12";
     $result = mysqli_query($conn, $query);

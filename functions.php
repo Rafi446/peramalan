@@ -70,20 +70,4 @@ function register($data) {
 
 }
 
-function login($data) {
-    global $conn;
-    $username = $data["username"];
-    $password = $data["password"];
-    $query = "SELECT * FROM users WHERE username = '$username'";
-    $result = mysqli_query($conn, $query);
-    if (mysqli_num_rows($result) == 1) {
-        $row = mysqli_fetch_assoc($result);
-        if (password_verify($password, $row["password"])) {
-            header("Location: index.php");
-            exit;
-        }
-    }
-    $erro = true;
-}
-
 ?>

@@ -1,6 +1,12 @@
 <?php 
 
 require 'functions.php';
+session_start();
+
+if (!isset($_SESSION["login"])) {
+    header("Location: login.php");
+    exit;
+}
 
 $daftarhp = query("SELECT * FROM sales_data");
 
@@ -15,6 +21,7 @@ $daftarhp = query("SELECT * FROM sales_data");
 </head>
 <body>
     <h2>Halaman Dashboard</h2>
+    <a href="logout.php">Logout</a><br><br>
     <a href="peramalan.php" style="color: darkgrey;">Peramalan</a> |
     <a href="tambah.php">Tambah Data Penjualan</a>
     <br><br>
